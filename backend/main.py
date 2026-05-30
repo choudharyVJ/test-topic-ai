@@ -5,101 +5,141 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from app.api.roadmap import (
-
-    router as roadmap_router
+router as roadmap_router
 )
 
 from app.api.interview import (
-
-    router as interview_router
+router as interview_router
 )
 
 from app.api.evaluation import (
-
-    router as evaluation_router
+router as evaluation_router
 )
 
 from app.api.generate_answer import (
-    router as answer_router
+router as answer_router
 )
 
-# Load environment variables
+# =========================
+
+# LOAD ENV VARIABLES
+
+# =========================
 
 load_dotenv()
 
+# =========================
 
-# Create FastAPI app
+# CREATE FASTAPI APP
+
+# =========================
 
 app = FastAPI(
 
-    title="HireGenix AI",
+title="HireGenix AI",
 
-    description="""
-    AI Career Intelligence Platform
-    """,
+description="""
+Premium AI Recruiter Simulation Platform
+""",
 
-    version="1.0.0"
+version="1.0.0"
+
 )
 
+# =========================
 
-# CORS Configuration
+# CORS CONFIGURATION
+
+# =========================
 
 app.add_middleware(
 
-    CORSMiddleware,
+CORSMiddleware,
 
-    allow_origins=[
+allow_origins=[
 
-        "http://localhost:3000",
+    "http://localhost:3000",
 
-        "https://hiregenix-ai.vercel.app",
-    ],
+    "https://hiregenix-ai.vercel.app",
+],
 
-    allow_credentials=True,
+allow_credentials=True,
 
-    allow_methods=["*"],
+allow_methods=["*"],
 
-    allow_headers=["*"],
+allow_headers=["*"],
+
 )
 
+# =========================
 
-# Register API Routes
+# REGISTER API ROUTES
+
+# =========================
 
 app.include_router(
 
-    roadmap_router,
+roadmap_router,
 
-    prefix="/api"
+prefix="/api"
+
 )
 
 app.include_router(
 
-    interview_router,
+interview_router,
 
-    prefix="/api"
+prefix="/api"
+
 )
 
 app.include_router(
 
-    evaluation_router,
+evaluation_router,
 
-    prefix="/api"
+prefix="/api"
+
 )
 
 app.include_router(
-    answer_router,
 
-    prefix="/api"
+
+answer_router,
+
+prefix="/api"
+
 )
 
-# Health Check Route
+# =========================
+
+# ROOT ROUTE
+
+# =========================
 
 @app.get("/")
 
 async def root():
 
-    return {
+ return {
 
-        "message":
-        "HireGenix AI Backend Running 😄🔥"
-    }
+    "message":
+    "HireGenix AI Backend Running 😄🔥"
+}
+
+# =========================
+
+# HEALTH CHECK ROUTE
+
+# =========================
+
+@app.get("/ping")
+
+async def ping():
+
+ return {
+
+    "status": "alive",
+
+    "service": "HireGenix AI Backend"
+}
+
