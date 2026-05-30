@@ -1,100 +1,248 @@
 "use client";
 
-import { useUser, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+
+import {
+useUser,
+SignInButton,
+SignUpButton,
+UserButton,
+} from "@clerk/nextjs";
 
 export default function Navbar() {
-  const { isSignedIn } = useUser();
 
-  return (
-    <header
-      className="
-        w-full
+const { isSignedIn } = useUser();
 
-        fixed
-        top-0
-        left-0
+const navItems = [
 
-        z-50
 
-        px-4
-        md:px-8
-      "
-    >
-      <nav
+{
+  name: "Dashboard",
+  href: "/dashboard",
+},
+
+{
+  name: "Roadmaps",
+  href: "/roadmap",
+},
+
+{
+  name: "Interview",
+  href: "/interview",
+},
+
+
+];
+
+return (
+
+
+<header
+  className="
+    w-full
+
+    fixed
+    top-0
+    left-0
+
+    z-50
+
+    px-4
+    md:px-8
+  "
+>
+
+  <nav
+    className="
+      mt-6
+
+      max-w-5xl
+
+      mx-auto
+
+      rounded-full
+
+     px-5
+     md:px-6
+
+      py-4
+
+      flex
+      items-center
+      justify-between
+
+      backdrop-blur-xl
+
+      bg-white/5
+
+      border
+      border-cyan-400/10
+
+      shadow-[0_0_40px_rgba(34,211,238,0.08)]
+    "
+  >
+
+    {/* ========================= */}
+    {/* LOGO */}
+    {/* ========================= */}
+
+    <Link href="/">
+
+      <h1
         className="
-          glass-card
+          text-xl
+          md:text-2xl
 
-          mt-6
+          font-semibold
 
-          max-w-7xl
+          tracking-tight
 
-          mx-auto
+          text-white
 
-          rounded-full
+          cursor-pointer
 
-          px-6
-          md:px-8
+          hover:text-cyan-300
 
-          py-4
-
-          flex
-          items-center
-          justify-between
+          transition-all
+          duration-300
         "
       >
-        {/* Logo */}
+        HireGenix AI
+      </h1>
 
-        <div>
-          <h1
-            className="
-              text-xl
-              md:text-2xl
+    </Link>
 
-              font-semibold
+    {/* ========================= */}
+    {/* NAV LINKS */}
+    {/* ========================= */}
 
-              tracking-tight
+    <div
+      className="
+        hidden
+        md:flex
 
-              text-white
-            "
-          >
-            HireGenix AI
-          </h1>
-        </div>
+        items-center
 
-        {/* Nav Links */}
+        gap-6
+      "
+    >
 
-        <div
+      {navItems.map((item) => (
+
+        <Link
+          key={item.name}
+          href={item.href}
           className="
-            hidden
-            md:flex
+            text-slate-300
 
-            items-center
+            hover:text-cyan-300
 
-            gap-10
+            transition-all
+            duration-300
+
+            text-sm
+
+            relative
+
+            after:absolute
+            after:left-0
+            after:-bottom-1
+
+            after:h-[1px]
+            after:w-0
+
+            after:bg-cyan-300
+
+            after:transition-all
+            after:duration-300
+
+            hover:after:w-full
           "
         >
-          {["Features", "AI Coaching", "Roadmaps", "Interview Prep"].map(
-            (item) => (
-              <button
-                key={item}
-                className="
-                  text-slate-300
+          {item.name}
+        </Link>
+      ))}
+    </div>
 
-                  hover:text-cyan-300
+    {/* ========================= */}
+    {/* AUTH AREA */}
+    {/* ========================= */}
 
-                  transition-colors
-                  duration-300
+    <div
+      className="
+        flex
+        items-center
 
-                  text-sm
-                "
-              >
-                {item}
-              </button>
-            ),
-          )}
-        </div>
+        gap-4
+      "
+    >
 
-        {/* Auth Area */}
+      {!isSignedIn ? (
+
+        <>
+
+          <SignInButton>
+
+            <button
+              className="
+                backdrop-blur-xl
+
+                bg-white/5
+
+                border
+                border-cyan-400/10
+
+                px-5
+                py-2.5
+
+                rounded-full
+
+                text-white
+
+                hover:border-cyan-400/40
+
+                hover:bg-cyan-400/10
+
+                transition-all
+                duration-300
+              "
+            >
+              Sign In
+            </button>
+
+          </SignInButton>
+
+          <SignUpButton>
+
+            <button
+              className="
+                bg-cyan-400
+
+                hover:bg-cyan-300
+
+                transition-all
+                duration-300
+
+                text-slate-900
+
+                font-semibold
+
+                px-5
+                py-2.5
+
+                rounded-full
+
+                shadow-[0_0_30px_rgba(34,211,238,0.35)]
+              "
+            >
+              Get Started
+            </button>
+
+          </SignUpButton>
+
+        </>
+
+      ) : (
 
         <div
           className="
@@ -104,91 +252,42 @@ export default function Navbar() {
             gap-4
           "
         >
-          {!isSignedIn ? (
-            <>
-              <SignInButton>
-                <button
-                  className="
-                      glass-card
 
-                      px-5
-                      py-2.5
+          <Link
+            href="/dashboard"
+            className="
+              backdrop-blur-xl
 
-                      rounded-full
+              bg-white/5
 
-                      text-white
+              border
+              border-cyan-400/10
 
-                      hover:border-cyan-400/40
+              px-5
+              py-2.5
 
-                      transition-all
-                      duration-300
-                    "
-                >
-                  Sign In
-                </button>
-              </SignInButton>
+              rounded-full
 
-              <SignUpButton>
-                <button
-                  className="
-                      bg-cyan-400
+              text-white
 
-                      hover:bg-cyan-300
+              hover:border-cyan-400/40
 
-                      transition-all
-                      duration-300
+              hover:bg-cyan-400/10
 
-                      text-slate-900
+              transition-all
+              duration-300
+            "
+          >
+            Dashboard
+          </Link>
 
-                      font-semibold
+          <UserButton />
 
-                      px-5
-                      py-2.5
-
-                      rounded-full
-
-                      cyan-glow
-                    "
-                >
-                  Get Started
-                </button>
-              </SignUpButton>
-            </>
-          ) : (
-            <div
-              className="
-                  flex
-                  items-center
-
-                  gap-4
-                "
-            >
-              <a
-                href="/dashboard"
-                className="
-    glass-card
-
-    px-5
-    py-2.5
-
-    rounded-full
-
-    text-white
-
-    hover:border-cyan-400/40
-
-    transition-all
-    duration-300
-  "
-              >
-                Dashboard
-              </a>
-
-              <UserButton />
-            </div>
-          )}
         </div>
-      </nav>
-    </header>
-  );
+      )}
+    </div>
+  </nav>
+</header>
+
+);
 }
