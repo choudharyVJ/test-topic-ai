@@ -15,12 +15,6 @@ const { isSignedIn } = useUser();
 
 const navItems = [
 
-
-{
-  name: "Dashboard",
-  href: "/dashboard",
-},
-
 {
   name: "Roadmaps",
   href: "/roadmap",
@@ -31,11 +25,9 @@ const navItems = [
   href: "/interview",
 },
 
-
 ];
 
 return (
-
 
 <header
   className="
@@ -47,29 +39,28 @@ return (
 
     z-50
 
-    px-4
+    px-3
     md:px-8
   "
 >
 
   <nav
     className="
-      mt-6
+      mt-4
+      md:mt-6
 
-      max-w-5xl
+      max-w-6xl
 
       mx-auto
 
-      rounded-full
+      rounded-2xl
+      md:rounded-full
 
-     px-5
-     md:px-6
+      px-4
+      md:px-8
 
-      py-4
-
-      flex
-      items-center
-      justify-between
+      py-3
+      md:py-4
 
       backdrop-blur-xl
 
@@ -83,210 +74,287 @@ return (
   >
 
     {/* ========================= */}
-    {/* LOGO */}
-    {/* ========================= */}
-
-    <Link href="/">
-
-      <h1
-        className="
-          text-xl
-          md:text-2xl
-
-          font-semibold
-
-          tracking-tight
-
-          text-white
-
-          cursor-pointer
-
-          hover:text-cyan-300
-
-          transition-all
-          duration-300
-        "
-      >
-        HireGenix AI
-      </h1>
-
-    </Link>
-
-    {/* ========================= */}
-    {/* NAV LINKS */}
-    {/* ========================= */}
-
-    <div
-      className="
-        hidden
-        md:flex
-
-        items-center
-
-        gap-6
-      "
-    >
-
-      {navItems.map((item) => (
-
-        <Link
-          key={item.name}
-          href={item.href}
-          className="
-            text-slate-300
-
-            hover:text-cyan-300
-
-            transition-all
-            duration-300
-
-            text-sm
-
-            relative
-
-            after:absolute
-            after:left-0
-            after:-bottom-1
-
-            after:h-[1px]
-            after:w-0
-
-            after:bg-cyan-300
-
-            after:transition-all
-            after:duration-300
-
-            hover:after:w-full
-          "
-        >
-          {item.name}
-        </Link>
-      ))}
-    </div>
-
-    {/* ========================= */}
-    {/* AUTH AREA */}
+    {/* MOBILE NAVBAR */}
     {/* ========================= */}
 
     <div
       className="
         flex
-        items-center
+        md:hidden
 
-        gap-4
+        items-center
+        justify-between
       "
     >
 
-      {!isSignedIn ? (
+      {/* LOGO */}
 
-        <>
+      <Link href="/">
+
+        <h1
+          className="
+            text-base
+
+            font-semibold
+
+            tracking-tight
+
+            text-white
+
+            whitespace-nowrap
+
+            hover:text-cyan-300
+
+            transition-all
+            duration-300
+          "
+        >
+          HireGenix AI
+        </h1>
+
+      </Link>
+
+      {/* MOBILE LINKS */}
+
+      <div
+        className="
+          flex
+          items-center
+
+          gap-3
+        "
+      >
+
+        {navItems.map((item) => (
+
+          <Link
+            key={item.name}
+            href={item.href}
+            className="
+              text-slate-300
+
+              hover:text-cyan-300
+
+              transition-all
+              duration-300
+
+              text-xs
+
+              whitespace-nowrap
+            "
+          >
+            {item.name}
+          </Link>
+        ))}
+
+        {isSignedIn ? (
+
+          <UserButton />
+
+        ) : (
 
           <SignInButton>
 
             <button
               className="
-                backdrop-blur-xl
-
-                bg-white/5
-
-                border
-                border-cyan-400/10
-
-                px-5
-                py-2.5
-
-                rounded-full
+                text-xs
 
                 text-white
-
-                hover:border-cyan-400/40
-
-                hover:bg-cyan-400/10
-
-                transition-all
-                duration-300
               "
             >
               Sign In
             </button>
 
           </SignInButton>
+        )}
 
-          <SignUpButton>
+      </div>
+    </div>
 
-            <button
-              className="
-                bg-cyan-400
+    {/* ========================= */}
+    {/* DESKTOP NAVBAR */}
+    {/* ========================= */}
 
-                hover:bg-cyan-300
+    <div
+      className="
+        hidden
+        md:grid
 
-                transition-all
-                duration-300
+        grid-cols-3
 
-                text-slate-900
+        items-center
+      "
+    >
 
-                font-semibold
+      {/* LEFT */}
+      
+      <div>
 
-                px-5
-                py-2.5
+        <Link href="/">
 
-                rounded-full
-
-                shadow-[0_0_30px_rgba(34,211,238,0.35)]
-              "
-            >
-              Get Started
-            </button>
-
-          </SignUpButton>
-
-        </>
-
-      ) : (
-
-        <div
-          className="
-            flex
-            items-center
-
-            gap-4
-          "
-        >
-
-          <Link
-            href="/dashboard"
+          <h1
             className="
-              backdrop-blur-xl
+              text-2xl
 
-              bg-white/5
+              font-semibold
 
-              border
-              border-cyan-400/10
-
-              px-5
-              py-2.5
-
-              rounded-full
+              tracking-tight
 
               text-white
 
-              hover:border-cyan-400/40
+              whitespace-nowrap
 
-              hover:bg-cyan-400/10
+              hover:text-cyan-300
 
               transition-all
               duration-300
             "
           >
-            Dashboard
+            HireGenix AI
+          </h1>
+
+        </Link>
+
+      </div>
+
+      {/* CENTER NAV */}
+
+      <div
+        className="
+          flex
+          items-center
+          justify-center
+
+          gap-10
+        "
+      >
+
+        {navItems.map((item) => (
+
+          <Link
+            key={item.name}
+            href={item.href}
+            className="
+              text-slate-300
+
+              hover:text-cyan-300
+
+              transition-all
+              duration-300
+
+              text-sm
+
+              relative
+
+              after:absolute
+              after:left-0
+              after:-bottom-1
+
+              after:h-[1px]
+              after:w-0
+
+              after:bg-cyan-300
+
+              after:transition-all
+              after:duration-300
+
+              hover:after:w-full
+            "
+          >
+            {item.name}
           </Link>
+        ))}
+
+      </div>
+
+      {/* RIGHT AUTH */}
+
+      <div
+        className="
+          flex
+          items-center
+          justify-end
+
+          gap-4
+        "
+      >
+
+        {!isSignedIn ? (
+
+          <>
+
+            <SignInButton>
+
+              <button
+                className="
+                  backdrop-blur-xl
+
+                  bg-white/5
+
+                  border
+                  border-cyan-400/10
+
+                  px-5
+                  py-2.5
+
+                  rounded-full
+
+                  text-white
+
+                  hover:border-cyan-400/40
+
+                  hover:bg-cyan-400/10
+
+                  transition-all
+                  duration-300
+                "
+              >
+                Sign In
+              </button>
+
+            </SignInButton>
+
+            <SignUpButton>
+
+              <button
+                className="
+                  bg-cyan-400
+
+                  hover:bg-cyan-300
+
+                  transition-all
+                  duration-300
+
+                  text-slate-900
+
+                  font-semibold
+
+                  px-5
+                  py-2.5
+
+                  rounded-full
+
+                  shadow-[0_0_30px_rgba(34,211,238,0.35)]
+                "
+              >
+                Get Started
+              </button>
+
+            </SignUpButton>
+
+          </>
+
+        ) : (
 
           <UserButton />
+        )}
 
-        </div>
-      )}
+      </div>
+
     </div>
+
   </nav>
+
 </header>
 
 );
