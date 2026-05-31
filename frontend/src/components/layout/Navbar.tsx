@@ -114,38 +114,56 @@ return (
 
       </Link>
 
-      {/* MOBILE LINKS */}
+      {/* MOBILE RIGHT */}
 
       <div
         className="
           flex
           items-center
 
-          gap-3
+          gap-2
         "
       >
 
-        {navItems.map((item) => (
+        {/* SHOW NAV ITEMS ONLY IF SIGNED IN */}
 
-          <Link
-            key={item.name}
-            href={item.href}
+        {isSignedIn && (
+
+          <div
             className="
-              text-slate-300
+              flex
+              items-center
 
-              hover:text-cyan-300
-
-              transition-all
-              duration-300
-
-              text-xs
-
-              whitespace-nowrap
+              gap-3
             "
           >
-            {item.name}
-          </Link>
-        ))}
+
+            {navItems.map((item) => (
+
+              <Link
+                key={item.name}
+                href={item.href}
+                className="
+                  text-slate-300
+
+                  hover:text-cyan-300
+
+                  transition-all
+                  duration-300
+
+                  text-xs
+
+                  whitespace-nowrap
+                "
+              >
+                {item.name}
+              </Link>
+            ))}
+
+          </div>
+        )}
+
+        {/* AUTH */}
 
         {isSignedIn ? (
 
@@ -153,22 +171,69 @@ return (
 
         ) : (
 
-          <SignInButton>
+          <div
+            className="
+              flex
+              items-center
 
-            <button
-              className="
-                text-xs
+              gap-2
+            "
+          >
 
-                text-white
-              "
-            >
-              Sign In
-            </button>
+            <SignInButton>
 
-          </SignInButton>
+              <button
+                className="
+                  text-xs
+
+                  text-white
+
+                  px-3
+                  py-2
+
+                  rounded-full
+
+                  border
+                  border-cyan-400/10
+
+                  bg-white/5
+                "
+              >
+                Sign In
+              </button>
+
+            </SignInButton>
+
+            <SignUpButton>
+
+              <button
+                className="
+                  bg-cyan-400
+
+                  text-slate-900
+
+                  text-xs
+
+                  font-semibold
+
+                  px-3
+                  py-2
+
+                  rounded-full
+
+                  shadow-[0_0_20px_rgba(34,211,238,0.25)]
+                "
+              >
+                Get Started
+              </button>
+
+            </SignUpButton>
+
+          </div>
         )}
 
       </div>
+
     </div>
 
     {/* ========================= */}
@@ -229,7 +294,7 @@ return (
         "
       >
 
-        {navItems.map((item) => (
+        {isSignedIn && navItems.map((item) => (
 
           <Link
             key={item.name}
