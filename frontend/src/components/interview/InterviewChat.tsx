@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import InterviewFeedback from "./InterviewFeedback";
 
+import { useAuth } from "@clerk/nextjs";
+
 interface Props {
   question: string;
 
@@ -53,6 +55,8 @@ export default function InterviewChat({
 
   const [loadingMessage, setLoadingMessage] = useState("");
 
+  const { getToken } = useAuth();
+
   // =========================
   // SUBMIT ANSWER
   // =========================
@@ -60,9 +64,16 @@ export default function InterviewChat({
   const handleSubmitAnswer = async () => {
     try {
       setLoadingEvaluation(true);
+
       setCountdown(60);
 
       setLoadingMessage("Recruiter reviewing your answer 😄");
+
+      // =========================
+      // GET CLERK TOKEN
+      // =========================
+
+      const token = await getToken();
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/evaluate-answer`,
@@ -72,6 +83,8 @@ export default function InterviewChat({
 
           headers: {
             "Content-Type": "application/json",
+
+            Authorization: `Bearer ${token}`,
           },
 
           body: JSON.stringify({
@@ -139,14 +152,10 @@ export default function InterviewChat({
       };
 
       // =========================
-      // SAVE MEMORY STATE
+      // SAVE MEMORY
       // =========================
 
       setMemory(updatedMemory);
-
-      // =========================
-      // LOCAL STORAGE SAVE
-      // =========================
 
       localStorage.setItem(
         "HireGenix-memory",
@@ -171,7 +180,7 @@ export default function InterviewChat({
   const handleNextQuestion = async () => {
     try {
       // =========================
-      // RESET OLD UI FIRST
+      // RESET OLD UI
       // =========================
 
       setFeedback(null);
@@ -189,6 +198,12 @@ export default function InterviewChat({
       setLoadingMessage("Free AI server waking up 😄");
 
       // =========================
+      // GET CLERK TOKEN
+      // =========================
+
+      const token = await getToken();
+
+      // =========================
       // FETCH NEXT QUESTION
       // =========================
 
@@ -200,6 +215,8 @@ export default function InterviewChat({
 
           headers: {
             "Content-Type": "application/json",
+
+            Authorization: `Bearer ${token}`,
           },
 
           body: JSON.stringify({
@@ -207,7 +224,7 @@ export default function InterviewChat({
 
             difficulty,
 
-            stack,
+            stack: stack.split(",").map((item) => item.trim()),
 
             previous_question: currentQuestion,
 
@@ -227,7 +244,7 @@ export default function InterviewChat({
       setQuestion(data.question);
 
       // =========================
-      // SAVE QUESTION IN MEMORY
+      // SAVE QUESTION MEMORY
       // =========================
 
       setMemory((prev: any) => ({
@@ -391,13 +408,22 @@ export default function InterviewChat({
 
               if (!showAnswer && !generatedAnswer) {
                 try {
+                  // =========================
+                  // GET CLERK TOKEN
+                  // =========================
+
+                  const token = await getToken();
+
                   const response = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/generate-mentor-answer`,
+
                     {
                       method: "POST",
 
                       headers: {
                         "Content-Type": "application/json",
+
+                        Authorization: `Bearer ${token}`,
                       },
 
                       body: JSON.stringify({
@@ -423,14 +449,14 @@ export default function InterviewChat({
               setShowAnswer(!showAnswer);
             }}
             className="
-        text-cyan-300
+    text-cyan-300
 
-        text-sm
+    text-sm
 
-        hover:text-cyan-200
+    hover:text-cyan-200
 
-        transition-all
-      "
+    transition-all
+  "
           >
             {showAnswer ? "Hide Answer" : "See How Recruiter Would Answer 👀"}
           </button>

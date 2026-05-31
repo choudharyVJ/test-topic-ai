@@ -4,6 +4,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from dotenv import load_dotenv
 
+from app.utils.rate_limiter import (
+limiter,
+)
+
+
+from slowapi.errors import RateLimitExceeded
+
+from slowapi.middleware import SlowAPIMiddleware
+
+from slowapi.extension import _rate_limit_exceeded_handler
+
 from app.api.roadmap import (
 router as roadmap_router
 )
@@ -28,6 +39,7 @@ router as answer_router
 
 load_dotenv()
 
+
 # =========================
 
 # CREATE FASTAPI APP
@@ -44,6 +56,23 @@ Premium AI Recruiter Simulation Platform
 
 version="1.0.0"
 
+)
+
+# =========================
+
+# REGISTER LIMITER
+
+# =========================
+
+app.state.limiter = limiter
+
+app.add_exception_handler(
+RateLimitExceeded,
+_rate_limit_exceeded_handler
+)
+
+app.add_middleware(
+SlowAPIMiddleware
 )
 
 # =========================
@@ -65,9 +94,18 @@ allow_origins=[
 
 allow_credentials=True,
 
-allow_methods=["*"],
+allow_methods=[
 
-allow_headers=["*"],
+    "GET",
+    "POST",
+    "OPTIONS",
+],
+
+allow_headers=[
+
+    "Content-Type",
+    "Authorization",
+],
 
 )
 
@@ -103,7 +141,6 @@ prefix="/api"
 
 app.include_router(
 
-
 answer_router,
 
 prefix="/api"
@@ -117,14 +154,10 @@ prefix="/api"
 # =========================
 
 @app.get("/")
-
 async def root():
-
- return {
-
-    "message":
-    "HireGenix AI Backend Running 😄🔥"
-}
+    return {
+        "message": "HireGenix AI Backend Running 😄🔥"
+    }
 
 # =========================
 
@@ -133,13 +166,11 @@ async def root():
 # =========================
 
 @app.get("/ping")
-
 async def ping():
 
- return {
+   return {
 
     "status": "alive",
 
     "service": "HireGenix AI Backend"
 }
-

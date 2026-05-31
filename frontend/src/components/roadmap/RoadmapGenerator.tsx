@@ -8,6 +8,8 @@ import { saveMemory } from "@/lib/memory";
 
 import { RoadmapResponse } from "@/types/roadmap";
 
+import { useAuth } from "@clerk/nextjs";
+
 export default function RoadmapGenerator() {
   const [role, setRole] = useState("");
 
@@ -19,78 +21,67 @@ export default function RoadmapGenerator() {
 
   const [roadmap, setRoadmap] = useState<RoadmapResponse | null>(null);
 
- const generateRoadmap = async () => {
+  const { getToken } = useAuth();
 
-  if (!role.trim()) return;
+  const generateRoadmap = async () => {
+    if (!role.trim()) return;
 
-  saveMemory({
+    saveMemory({
+      targetRole: role,
 
-    targetRole: role,
+      experienceLevel: level,
 
-    experienceLevel: level,
+      strongAreas: ["Frontend", "AI Systems"],
 
-    strongAreas: [
+      weakAreas: ["Cloud", "System Design"],
+    });
 
-      "Frontend",
+    setLoading(true);
 
-      "AI Systems",
-    ],
+    setGenerated(false);
 
-    weakAreas: [
+    try {
+      // =========================
+      // GET CLERK TOKEN
+      // =========================
 
-      "Cloud",
+      const token = await getToken();
 
-      "System Design",
-    ],
-  });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/generate-roadmap`,
 
-  setLoading(true);
+        {
+          method: "POST",
 
-  setGenerated(false);
+          headers: {
+            "Content-Type": "application/json",
 
-  try {
+            Authorization: `Bearer ${token}`,
+          },
 
-    const response = await fetch(
+          body: JSON.stringify({
+            role,
 
-      `${process.env.NEXT_PUBLIC_API_URL}/generate-roadmap`,
-
-      {
-
-        method: 'POST',
-
-        headers: {
-
-          'Content-Type':
-            'application/json',
+            level,
+          }),
         },
+      );
 
-        body: JSON.stringify({
+      const data = await response.json();
 
-          role,
+      console.log(data);
 
-          level,
-        }),
-      }
-    );
+      setRoadmap(data);
 
-    const data =
-      await response.json();
+      setLoading(false);
 
-    console.log(data);
+      setGenerated(true);
+    } catch (error) {
+      console.error(error);
 
-    setRoadmap(data);
-
-    setLoading(false);
-
-    setGenerated(true);
-
-  } catch (error) {
-
-    console.error(error);
-
-    setLoading(false);
-  }
-};
+      setLoading(false);
+    }
+  };
 
   return (
     <section
@@ -103,17 +94,16 @@ export default function RoadmapGenerator() {
     >
       <div
         className="
-          max-w-7xl
+          max-w-2xl
 
           mx-auto
 
-          grid
-          grid-cols-1
-          lg:grid-cols-2
+          flex
+          flex-col
 
           gap-10
 
-          items-start
+          items-center
         "
       >
         {/* LEFT PANEL */}
@@ -140,6 +130,8 @@ export default function RoadmapGenerator() {
 
             p-8
             md:p-10
+
+            w-full
           "
         >
           <p
@@ -398,80 +390,126 @@ export default function RoadmapGenerator() {
                   flex-col
 
                   gap-6
+
+                  w-full
                 "
             >
               {roadmap?.steps?.map((step, index) => (
-                <div
+                <motion.div
                   key={step.phase}
+                  initial={{
+                    opacity: 0,
+                    y: 40,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.7,
+                    delay: index * 0.1,
+                  }}
                   className="
-                          glass-card
+                    glass-card
 
-                          rounded-[32px]
+                    rounded-[32px]
 
-                          p-8
+                    p-8
 
-                          border
-                          border-white/10
+                    border
+                    border-white/10
 
-                          flex
+                    hover:border-cyan-400/30
 
-                          gap-6
-                        "
+                    transition-all
+                    duration-300
+                  "
                 >
-                  {/* Number */}
+                  {/* Header with Number and Title */}
+                  <div className="flex items-start gap-6 mb-6">
+                    {/* Number */}
+                    <div
+                      className="
+                        min-w-[56px]
+                        h-[56px]
 
-                  <div
-                    className="
-                            min-w-[56px]
-                            h-[56px]
+                        rounded-2xl
 
-                            rounded-2xl
+                        bg-cyan-400/10
 
-                            bg-cyan-400/10
+                        border
+                        border-cyan-400/20
 
-                            border
-                            border-cyan-400/20
+                        flex
+                        items-center
+                        justify-center
 
-                            flex
-                            items-center
-                            justify-center
+                        text-cyan-300
 
-                            text-cyan-300
+                        font-semibold
+                      "
+                    >
+                      0{index + 1}
+                    </div>
 
-                            font-semibold
-                          "
-                  >
-                    0{index + 1}
+                    {/* Title and Description */}
+                    <div className="flex-1">
+                      <h3
+                        className="
+                          text-white
+
+                          text-2xl
+
+                          font-semibold
+
+                          mb-2
+                        "
+                      >
+                        {step.phase}
+                      </h3>
+
+                      <p
+                        className="
+                          text-slate-400
+
+                          leading-6
+                        "
+                      >
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Content */}
+                  {/* Skills Section */}
+                  {step.skills && step.skills.length > 0 && (
+                    <div className="mt-6 pt-6 border-t border-white/10">
+                      <p className="text-cyan-300 text-sm font-semibold mb-4 uppercase tracking-[0.1em]">
+                        Key Skills
+                      </p>
+                      <div className="space-y-3">
+                        {step.skills.map((skill, skillIndex) => (
+                          <div key={skillIndex} className="flex items-center gap-3">
+                            <div
+                              className="
+                                w-2
+                                h-2
 
-                  <div>
-                    <h3
-                      className="
-                              text-white
+                                rounded-full
 
-                              text-2xl
+                                bg-cyan-400
 
-                              font-semibold
-
-                              mb-4
-                            "
-                    >
-                      {step.phase}
-                    </h3>
-
-                    <p
-                      className="
-                              text-slate-400
-
-                              leading-8
-                            "
-                    >
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
+                                flex-shrink-0
+                              "
+                            />
+                            <p className="text-slate-300 text-sm leading-6">
+                              {skill}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
               ))}
             </motion.div>
           )}

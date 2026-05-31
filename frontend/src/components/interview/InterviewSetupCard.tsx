@@ -4,33 +4,26 @@ import { useState } from "react";
 
 import InterviewChat from "./InterviewChat";
 
+import { useAuth } from "@clerk/nextjs";
+
 export default function InterviewSetupCard() {
   const [role, setRole] = useState("");
 
-  const [difficulty, setDifficulty] =
-    useState("Intermediate");
+  const [difficulty, setDifficulty] = useState("Intermediate");
 
-  const [stack, setStack] =
-    useState("");
+  const [stack, setStack] = useState("");
 
-  const [question, setQuestion] =
-    useState("");
+  const [question, setQuestion] = useState("");
 
-  const [
-  generatedAnswer,
+  const [generatedAnswer, setGeneratedAnswer] = useState("");
 
-  setGeneratedAnswer,
-] = useState("");  
+  const [started, setStarted] = useState(false);
 
-  const [started, setStarted] =
-    useState(false);
+  const { getToken } = useAuth();
 
-  const [loading, setLoading] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
 
-const [memory, setMemory] =
-  useState({
-
+  const [memory, setMemory] = useState({
     history: [],
 
     asked_questions: [],
@@ -94,20 +87,12 @@ const [memory, setMemory] =
 
             <input
               type="text"
-
               value={role}
-
-              onChange={(e) =>
-                setRole(
-                  e.target.value
-                )
-              }
-
+              onChange={(e) => setRole(e.target.value)}
               placeholder="
                 Example:
                 AI Engineer
               "
-
               className="
                 w-full
 
@@ -149,13 +134,7 @@ const [memory, setMemory] =
 
             <select
               value={difficulty}
-
-              onChange={(e) =>
-                setDifficulty(
-                  e.target.value
-                )
-              }
-
+              onChange={(e) => setDifficulty(e.target.value)}
               className="
                 w-full
 
@@ -174,17 +153,11 @@ const [memory, setMemory] =
                 outline-none
               "
             >
-              <option>
-                Beginner
-              </option>
+              <option>Beginner</option>
 
-              <option>
-                Intermediate
-              </option>
+              <option>Intermediate</option>
 
-              <option>
-                Advanced
-              </option>
+              <option>Advanced</option>
             </select>
           </div>
 
@@ -205,19 +178,11 @@ const [memory, setMemory] =
 
             <input
               type="text"
-
               value={stack}
-
-              onChange={(e) =>
-                setStack(
-                  e.target.value
-                )
-              }
-
+              onChange={(e) => setStack(e.target.value)}
               placeholder="
                 React, FastAPI, LangChain...
               "
-
               className="
                 w-full
 
@@ -249,37 +214,39 @@ const [memory, setMemory] =
               try {
                 setLoading(true);
 
-                const response =
-                  await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/generate-interview-question`,
-                    {
-                      method: "POST",
+                // =========================
+                // GET CLERK TOKEN
+                // =========================
 
-                      headers: {
-                        "Content-Type":
-                          "application/json",
-                      },
+                const token = await getToken();
 
-                      body:
-                        JSON.stringify({
-                          role,
+                const response = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_URL}/generate-interview-question`,
 
-                          difficulty,
+                  {
+                    method: "POST",
 
-                          stack,
+                    headers: {
+                      "Content-Type": "application/json",
 
-                          memory,
-                        }),
-                    }
-                  );
+                      Authorization: `Bearer ${token}`,
+                    },
 
-                const data =
-                  await response.json();
+                    body: JSON.stringify({
+                      role,
 
-                setQuestion(
-                  data.question
+                      difficulty,
+
+                      stack: stack.split(",").map((item) => item.trim()),
+
+                      memory,
+                    }),
+                  },
                 );
 
+                const data = await response.json();
+
+                setQuestion(data.question);
 
                 setStarted(true);
 
@@ -291,29 +258,28 @@ const [memory, setMemory] =
               }
             }}
             className="
-              w-full
+w-full
 
-              bg-cyan-400
+bg-cyan-400
 
-              hover:bg-cyan-300
+hover:bg-cyan-300
 
-              transition-all
-              duration-300
+transition-all
+duration-300
 
-              text-slate-900
+text-slate-900
 
-              font-semibold
+font-semibold
 
-              py-5
+py-5
 
-              rounded-2xl
+rounded-2xl
 
-              cyan-glow
-            "
+cyan-glow
+
+"
           >
-            {loading
-              ? "Generating..."
-              : "Start AI Interview"}
+            {loading ? "Generating..." : "Start AI Interview"}
           </button>
         </div>
       )}
