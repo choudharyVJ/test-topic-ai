@@ -88,8 +88,9 @@ CORSMiddleware,
 allow_origins=[
 
     "http://localhost:3000",
+    "http://localhost:3001",
 
-    "https://topic-test-ai.vercel.app",
+    "https://test-topic-ai.vercel.app",
 ],
 
 allow_credentials=True,
