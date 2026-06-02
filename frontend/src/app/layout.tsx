@@ -22,10 +22,10 @@ subsets: ["latin"],
 
 export const metadata: Metadata = {
 
-title: "HireGenix AI",
+title: "Topic-Test-AI",
 
 description:
-"Premium AI-powered recruiter simulation platform",
+"Premium AI-powered topic testing and interview preparation platform",
 };
 
 export default function RootLayout({

@@ -157,8 +157,8 @@ return (
         "
       >
 
-        HireGenix AI helps developers prepare for
-        real-world interviews with AI recruiter simulations,
+        Topic-Test-AI helps developers prepare for
+        real-world interviews with AI topic testing, interview simulations,
         personalized roadmaps, mentor-style feedback,
         and modern learning guidance.
 
@@ -206,7 +206,7 @@ return (
           "
         >
 
-          HireGenix AI
+          Topic-Test-AI
 
         </h3>
 

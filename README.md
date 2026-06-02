@@ -1,8 +1,8 @@
-# HireGenix AI 🚀
+# Topic-Test-AI 🚀
 
-HireGenix AI is a premium AI-powered recruiter simulation and interview preparation platform designed to create realistic, adaptive, and conversational technical interview experiences.
+Topic-Test-AI is a premium AI-powered topic testing and interview preparation platform designed to create realistic, adaptive, and conversational technical interview experiences.
 
-Unlike generic chatbot wrappers, HireGenix AI behaves like a smart recruiter that:
+Unlike generic chatbot wrappers, Topic-Test-AI behaves like a smart interviewer that:
 
 * asks adaptive interview questions
 * evaluates candidate answers
@@ -204,7 +204,7 @@ GROQ_API_KEY=your_api_key
 
 # 💡 Vision
 
-HireGenix AI aims to become an intelligent AI-native interview preparation platform that feels less like a chatbot and more like a real recruiter conversation.
+Topic-Test-AI aims to become an intelligent AI-native interview and topic testing platform that feels less like a chatbot and more like a real interviewer conversation.
 
 ---
 

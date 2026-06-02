@@ -109,7 +109,7 @@ return (
             duration-300
           "
         >
-          HireGenix AI
+          Topic-Test-AI
         </h1>
 
       </Link>
@@ -275,7 +275,7 @@ return (
               duration-300
             "
           >
-            HireGenix AI
+            Topic-Test-AI
           </h1>
 
         </Link>

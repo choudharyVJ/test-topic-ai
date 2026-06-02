@@ -158,7 +158,7 @@ export default function InterviewChat({
       setMemory(updatedMemory);
 
       localStorage.setItem(
-        "HireGenix-memory",
+        "TopicTestAI-memory",
 
         JSON.stringify(updatedMemory),
       );

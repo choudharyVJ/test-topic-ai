@@ -21,7 +21,7 @@ const features = [
     title: "Weak Topic Detection",
 
     description:
-      "HireGenix tracks recurring mistakes, weak concepts, and confidence gaps to improve your interview preparation intelligently.",
+      "Topic-Test-AI tracks recurring mistakes, weak concepts, and confidence gaps to improve your interview preparation intelligently.",
   },
 
   {
@@ -159,7 +159,7 @@ export default function AIExperienceSection() {
           md:text-lg
         "
           >
-            HireGenix AI combines interview preparation, structured learning
+            Topic-Test-AI combines interview preparation, structured learning
             roadmaps, recruiter-style evaluations, and curated modern study
             resources into one intelligent platform for developers.
           </p>

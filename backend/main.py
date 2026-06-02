@@ -48,10 +48,10 @@ load_dotenv()
 
 app = FastAPI(
 
-title="HireGenix AI",
+title="Topic-Test-AI",
 
 description="""
-Premium AI Recruiter Simulation Platform
+Premium AI Topic Testing & Interview Preparation Platform
 """,
 
 version="1.0.0"
@@ -89,7 +89,7 @@ allow_origins=[
 
     "http://localhost:3000",
 
-    "https://hiregenix-ai.vercel.app",
+    "https://topic-test-ai.vercel.app",
 ],
 
 allow_credentials=True,
@@ -156,7 +156,7 @@ prefix="/api"
 @app.get("/")
 async def root():
     return {
-        "message": "HireGenix AI Backend Running 😄🔥"
+        "message": "Topic-Test-AI Backend Running 😄🔥"
     }
 
 # =========================
@@ -169,10 +169,10 @@ async def root():
 async def health():
     """
     Health check endpoint for server monitoring with Uptime Robot.
-    Returns the current status of the HireGenix AI Backend.
+    Returns the current status of the Topic-Test-AI Backend.
     """
     return {
         "status": "healthy",
-        "service": "HireGenix AI Backend",
+        "service": "Topic-Test-AI Backend",
         "timestamp": __import__("datetime").datetime.utcnow().isoformat()
     }

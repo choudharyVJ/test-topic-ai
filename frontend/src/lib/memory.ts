@@ -11,7 +11,7 @@ export interface UserMemory {
 
 
 const MEMORY_KEY =
-  'HireGenix-memory';
+  'TopicTestAI-memory';
 
 
 export function saveMemory(
