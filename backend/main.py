@@ -165,12 +165,14 @@ async def root():
 
 # =========================
 
-@app.get("/ping")
-async def ping():
-
-   return {
-
-    "status": "alive",
-
-    "service": "HireGenix AI Backend"
-}
+@app.get("/health")
+async def health():
+    """
+    Health check endpoint for server monitoring with Uptime Robot.
+    Returns the current status of the HireGenix AI Backend.
+    """
+    return {
+        "status": "healthy",
+        "service": "HireGenix AI Backend",
+        "timestamp": __import__("datetime").datetime.utcnow().isoformat()
+    }
