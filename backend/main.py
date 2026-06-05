@@ -4,6 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from dotenv import load_dotenv
 
+from fastapi import Response
+
+from datetime import datetime, timezone
+
 from app.utils.rate_limiter import (
 limiter,
 )
@@ -166,14 +170,19 @@ async def root():
 
 # =========================
 
-@app.get("/health")
-async def health():
+@app.api_route("/health", methods=["GET", "HEAD"])
+async def health(response: Response):
     """
     Health check endpoint for server monitoring with Uptime Robot.
+    Supports both GET and HEAD requests.
     Returns the current status of the Topic-Test-AI Backend.
     """
+    # HEAD requests should return headers only, no body
+    if response.headers.get("request-method") == "HEAD":
+        return Response(status_code=200)
+
     return {
         "status": "healthy",
         "service": "Topic-Test-AI Backend",
-        "timestamp": __import__("datetime").datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }
